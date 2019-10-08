@@ -69,3 +69,4 @@ ON a.ManagerId = b.Id
 AND a.Salary > b.Salary
 ;
 ```
+ 
