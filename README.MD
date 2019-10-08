@@ -25,3 +25,47 @@ IFNULL(
  WHERE Salary < (SELECT MAX(Salary) FROM Employee)),
  NULL) AS SecondHighestSalary;
 ```
+Leetcode 178. Rank Scores. We want to rank the scores. If we have same scores, rank them the same. And if we have rank of 1,2,2, the next is still 3.
+```
+select A.Score, count(B.Score) as Rank
+from Scores as A, (select distinct Score
+from Scores) as B
+where A.score <= B.Score
+group by A.Id
+order by A.Score desc;
+```
+
+Leetcode 180: Consecutive numbers. Find all numbers that appear at least three times consecutively. An easy way is to observe that the ids are consecutive. A more conserved way is to use lag and over
+```
+SELECT DISTINCT
+    l1.Num AS ConsecutiveNums
+FROM
+    Logs l1,
+    Logs l2,
+    Logs l3
+WHERE
+    l1.Id = l2.Id - 1
+    AND l2.Id = l3.Id - 1
+    AND l1.Num = l2.Num
+    AND l2.Num = l3.Num
+    ;
+```
+
+Leetcode 181. Employees Earning More Than Their Managers. First method is just using a where clause. Another method is to use inner join.
+```
+select a.Name as 'Employee'
+from
+employee as a,
+employee as b
+where
+a.managerid = b.id
+and a.salary > b.salary;
+```
+```
+SELECT
+a.NAME AS Employee
+FROM Employee AS a INNER JOIN Employee AS b
+ON a.ManagerId = b.Id
+AND a.Salary > b.Salary
+;
+```
