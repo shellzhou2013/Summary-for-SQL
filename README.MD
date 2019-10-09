@@ -69,4 +69,38 @@ ON a.ManagerId = b.Id
 AND a.Salary > b.Salary
 ;
 ```
- 
+Leetcode 182: duplicated emails: find all duplicate emails. Using group by and filter that count > 1. First is to use 'having' clause. The general way is to create a temp table.
+```
+select email
+from person
+group by email
+having (count(email) > 1);
+```
+```
+select email from
+(select email, count(email) as cnt
+from person
+group by email) as stats
+where cnt > 1;
+```
+Leetcode 183. customers who never ordered: two tables called customers and orders, find all names from customers who don't order.
+```
+select name as customers
+from customers
+where id not in
+(select customerid from orders);
+```
+Leetcode 184. First in where clause, find the highest salary using group by. Then inner join two table and select the highest.
+```
+select department.name as Department, employee.name as Employee, employee.salary as Salary
+from
+(employee inner join department
+ on employee.departmentid = department.id
+)
+where (employee.departmentid, employee.salary) in
+(select departmentid, max(salary)
+ from employee
+ group by departmentid
+)
+```
+
